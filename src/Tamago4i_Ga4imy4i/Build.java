@@ -1,11 +1,12 @@
 package Tamago4i_Ga4imy4i;
 
+import javax.swing.plaf.ButtonUI;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Build {
 
-    private boolean isLife;       //цикл игры
+    private boolean isLife = true;       //цикл игры
     private int needInHealth;           // хп
     private int needInFood;             //еда
     private int needInHygiene;          //гигиена
@@ -27,11 +28,18 @@ public class Build {
     int hygiene = 5;
     int treatment = 10;
     int sleep = 15;
-
-    int antiHugiene = 15;
+    int antiHealth = 5;
     int antiTreatment = 10;
     int antiFood = 20;
     int antiSleep = 15;
+
+    public static int randNum() {
+        Random random = new Random();
+        int min = 50;
+        int max = 80;
+        int randNumber = random.nextInt((max - min) + 1) + min;
+        return randNumber;
+    }
 
     public void printlnMenu() {
         System.out.println("Ваш тамагочи");
@@ -50,8 +58,8 @@ public class Build {
         switch (games) {
             case 1: {
                 if (needInFood < 0) {
-                    isLife = false;
                     System.out.println("Питомец умер от голода");
+                    isLife = false;
                 } else if (needInFood + food > 100) {
                     isLife = false;
                     System.out.println("Ваш питомец слишком много съел, от чего был разрыв желудка");
@@ -59,26 +67,25 @@ public class Build {
                 } else {
                     Random random = new Random();
                     int randNumber = random.nextInt(3);
-                    switch (randNumber){
-                        case 1:{
+                    switch (randNumber) {
+                        case 1: {
                             System.out.println("Вы накормили питомца протухшей рыбой!");
-                            needInFood = needInFood - antiFood;
+                            needInFood -= antiFood;
                             needInHealth--;
                         }
                         break;
-                        case 2:{
+                        case 2: {
                             System.out.println("Вы накормили питомца тортиком, но он испачкался.");
-                            needInFood = needInFood +food;
-                            needInHygiene = needInHygiene - hygiene;
+                            needInFood += food;
+                            needInHygiene -= hygiene;
                         }
                         break;
-                        case 3:{
+                        case 3: {
                             System.out.println("Вы накормили питомца картошечкой");
                             needInFood++;
                         }
+                        break;
                     }
-
-
                 }
             }
             break;
@@ -91,25 +98,61 @@ public class Build {
                     System.out.println("Вы протерли в питомце дыру.");
                     System.out.println("Конец игры!");
                 } else {
-                    needInHygiene = needInHygiene + hygiene;
-                    needInTreatment = needInTreatment - antiTreatment;
+                    Random random = new Random();
+                    int randNumber = random.nextInt(3);
+                    switch (randNumber) {
+                        case 1: {
+                            System.out.println("Питомец баловался при купании, эффект уменьшен вдвое");
+                            needInHygiene = needInHygiene + (hygiene / 2);
+                        }
+                        break;
+                        case 2: {
+                            System.out.println("Вода отключена, питомец грязный :(");
+                            needInHealth--;
+                        }
+                        break;
+                        case 3: {
+                            System.out.println("Питомец помыт и доволен!");
+                            needInHygiene += hygiene;
+                        }
+                        break;
+                    }
                 }
             }
-            break;
+
             case 3: {
                 if (needInTreatment < 0) {
                     isLife = false;
                     System.out.println("Питомец заболел и погиб :(");
                 } else if (needInTreatment + treatment > 100) {
                     isLife = false;
-                    System.out.println("Вы  напичкали питомца таблетками и вызвали эпилепсию");
+                    System.out.println("Вы напичкали питомца таблетками и вызвали эпилепсию");
                     System.out.println("Конец игры!");
                 } else {
-                    needInTreatment = needInTreatment + treatment;
-                    needInSlip = needInSlip - antiSleep;
+                    Random random = new Random();
+                    int randNumber = random.nextInt(3);
+                    switch (randNumber) {
+                        case 1: {
+                            System.out.println("Вы раствороили в кипятке лечебный порошек и дали питомцу");
+                            needInTreatment += treatment;
+                        }
+                        break;
+                        case 2: {
+                            System.out.println("Вы перепутали и заварили питомцу не тот порошек :))");
+                            needInHealth -= antiHealth;
+                            needInTreatment -= antiTreatment;
+                            needInFood -= antiFood;
+                            needInSlip -= antiSleep;
+                        }
+                        break;
+                        case 3: {
+                            System.out.println("Во время профилактики вы растворили питомца. R.I.P.");
+                            isLife = false;
+                        }
+                        break;
+                    }
                 }
             }
-            break;
             case 4: {
                 if (needInSlip < 0) {
                     isLife = false;
@@ -172,19 +215,7 @@ public class Build {
 
 
     public void printlCharacteristic() {
-        System.out.println("Шкала здоровья питомца - " + needInHealth);
-        System.out.println("Шкала голода питомца - " + needInFood);
-        System.out.println("Шкала чистоты питомца - " + needInHygiene);
-        System.out.println("Шкала иммунитета питомца - " + needInTreatment);
-        System.out.println("Шкала сна питомца - " + needInSlip);
+        System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", "Здоровье", "Голод", "Чистота", "Иммунитет", "Сон"));
+        System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", needInHealth, needInFood, needInHygiene, needInTreatment, needInSlip));
     }
-
-    public int randomInt() {
-        Random random = new Random();
-        int num = random.nextInt(3);
-    return num;
-    }
-
 }
-
-
