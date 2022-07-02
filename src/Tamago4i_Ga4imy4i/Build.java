@@ -1,17 +1,20 @@
 package Tamago4i_Ga4imy4i;
 
-import javax.swing.plaf.ButtonUI;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Build {
 
     private boolean isLife;       //цикл игры
-    private int needInHealth;           // хп
-    private int needInFood;             //еда
-    private int needInHygiene;          //гигиена
-    private int needInTreatment;        //лечение
-    private int needInSlip;             //сон
+    private static int needInHealth;           // хп
+    private static int needInFood;             //еда
+    private static int needInHygiene;          //гигиена
+    private static int needInTreatment;        //лечение
+    private static int needInSlip;             //сон
+
 
 
     public Build(int needInHealth, int needInFood, int needInHygiene, int needInTreatment, int needInSlip) {
@@ -41,7 +44,7 @@ public class Build {
         return randNumber;
     }
 
-    public void printlnMenu() {
+    public void printlnMenu() throws IOException {
         System.out.println("Ваш тамагочи");
         printlCharacteristic();
         System.out.println("В скобках указано сколько прибавится к данной характеристике");
@@ -187,6 +190,7 @@ public class Build {
             break;
             case 5: {
 
+                saveCharacteristicsToFile("output.txt");
             }
             break;
             case 6: {
@@ -199,6 +203,7 @@ public class Build {
             break;
         }
     }
+
 
 
     public boolean isLife() {
@@ -231,9 +236,57 @@ public class Build {
         return output;
     }
 
+    static String inputString(String message) {
+        boolean isValidInput;
+        String output = "";
+        do {
+            try {
+                isValidInput = true;
+                Scanner scanner = new Scanner(System.in);
+
+                System.out.print(message);
+                output = scanner.nextLine();
+            } catch (Exception e) {
+                isValidInput = false;
+                System.out.println("Ошибка ввода. Пожалуйста повторите ввод");
+            }
+
+        } while (isValidInput == false);
+
+        return output;
+    }
+
 
     public void printlCharacteristic() {
         System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", "Здоровье", "Голод", "Чистота", "Иммунитет", "Сон"));
         System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", needInHealth, needInFood, needInHygiene, needInTreatment, needInSlip));
     }
+
+    static void saveCharacteristicsToFile(String filename, Build build) throws IOException {
+        filename = inputString("Введите файл для сохранения");
+        FileWriter fileWriter = new FileWriter(filename);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+        bufferedWriter.write(Integer.toString(build.needInHealth));
+        bufferedWriter.newLine();
+
+        bufferedWriter.write(Integer.toString(build.needInFood));
+        bufferedWriter.newLine();
+
+        bufferedWriter.write(Integer.toString(build.needInHygiene));
+        bufferedWriter.newLine();
+
+        bufferedWriter.write(Integer.toString(build.needInTreatment));
+        bufferedWriter.newLine();
+
+        bufferedWriter.write(Integer.toString(build.needInSlip));
+        bufferedWriter.newLine();
+
+        fileWriter.close();
+        bufferedWriter.close();
+
+        System.out.println("Файл сохранён успешно");
+    }
+
+
 }
