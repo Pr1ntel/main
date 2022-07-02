@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Build {
 
-    private boolean isLife = true;       //цикл игры
+    private boolean isLife;       //цикл игры
     private int needInHealth;           // хп
     private int needInFood;             //еда
     private int needInHygiene;          //гигиена
@@ -57,13 +57,17 @@ public class Build {
 
         switch (games) {
             case 1: {
-                if (needInFood < 0) {
+                if (needInFood <= 0) {
                     System.out.println("Питомец умер от голода");
                     isLife = false;
+                    printlCharacteristic();
+
                 } else if (needInFood + food > 100) {
                     isLife = false;
                     System.out.println("Ваш питомец слишком много съел, от чего был разрыв желудка");
                     System.out.println("Конец игры!");
+                    printlCharacteristic();
+
                 } else {
                     Random random = new Random();
                     int randNumber = random.nextInt(3);
@@ -90,13 +94,17 @@ public class Build {
             }
             break;
             case 2: {
-                if (needInHygiene < 0) {
+                if (needInHygiene <= 0) {
                     isLife = false;
                     System.out.println("Питомец увяз в грязи. R.I.P.");
+                    printlCharacteristic();
+
                 } else if (needInHygiene + hygiene > 100) {
                     isLife = false;
                     System.out.println("Вы протерли в питомце дыру.");
                     System.out.println("Конец игры!");
+                    printlCharacteristic();
+
                 } else {
                     Random random = new Random();
                     int randNumber = random.nextInt(3);
@@ -121,13 +129,18 @@ public class Build {
             }
 
             case 3: {
-                if (needInTreatment < 0) {
+                if (needInTreatment <= 0) {
                     isLife = false;
                     System.out.println("Питомец заболел и погиб :(");
+                    printlCharacteristic();
+
+
                 } else if (needInTreatment + treatment > 100) {
                     isLife = false;
+                    printlCharacteristic();
                     System.out.println("Вы напичкали питомца таблетками и вызвали эпилепсию");
                     System.out.println("Конец игры!");
+
                 } else {
                     Random random = new Random();
                     int randNumber = random.nextInt(3);
@@ -148,19 +161,24 @@ public class Build {
                         case 3: {
                             System.out.println("Во время профилактики вы растворили питомца. R.I.P.");
                             isLife = false;
+                            printlCharacteristic();
                         }
                         break;
                     }
                 }
             }
             case 4: {
-                if (needInSlip < 0) {
+                if (needInSlip <= 0) {
                     isLife = false;
                     System.out.println("Питомец уснул вечным сном, из-за недосыпа");
+                    printlCharacteristic();
+
                 } else if (needInSlip + sleep > 100) {
                     isLife = false;
                     System.out.println("Питомец спал 25 часов из 24. R.I.P.");
                     System.out.println("Конец игры!");
+                    printlCharacteristic();
+
                 } else {
                     needInSlip = needInSlip + sleep;
                     needInFood = needInFood - antiFood;
@@ -184,7 +202,7 @@ public class Build {
 
 
     public boolean isLife() {
-        return true;
+        return isLife;
     }
 
     static int inputInt(String message, int min, int max) {
