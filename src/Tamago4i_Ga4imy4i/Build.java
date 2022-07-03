@@ -7,12 +7,11 @@ import java.util.Scanner;
 public class Build {
 
     private boolean isLife;       //цикл игры
-    private static int needInHealth;           // хп
-    private static int needInFood;             //еда
-    private static int needInHygiene;          //гигиена
-    private static int needInTreatment;        //лечение
-    private static int needInSlip;             //сон
-
+    private int needInHealth;           // хп
+    private int needInFood;             //еда
+    private int needInHygiene;          //гигиена
+    private int needInTreatment;        //лечение
+    private int needInSlip;             //сон
 
 
     public Build(int needInHealth, int needInFood, int needInHygiene, int needInTreatment, int needInSlip) {
@@ -37,6 +36,54 @@ public class Build {
 
     //endregion
 
+    //region utility function
+
+    static int inputInt(String message, int min, int max) {
+        boolean isValidInput;
+        int output = 0;
+        do {
+            try {
+                isValidInput = true;
+                Scanner scanner = new Scanner(System.in);
+
+                System.out.print(message);
+                output = scanner.nextInt();
+
+                if (output < min || output > max) {
+                    System.out.println("Ошибка ввода. Вы вышли за границы диапазона от " + min + " до " + max);
+                    throw new Exception();
+                }
+
+            } catch (Exception e) {
+                isValidInput = false;
+                System.out.println("Ошибка ввода. Пожалуйста повторите ввод");
+            }
+
+        } while (isValidInput == false);
+
+        return output;
+    }
+
+    static String inputString(String message) {
+        boolean isValidInput;
+        String output = "";
+        do {
+            try {
+                isValidInput = true;
+                Scanner scanner = new Scanner(System.in);
+
+                System.out.print(message);
+                output = scanner.nextLine();
+            } catch (Exception e) {
+                isValidInput = false;
+                System.out.println("Ошибка ввода. Пожалуйста повторите ввод");
+            }
+
+        } while (isValidInput == false);
+
+        return output;
+    }
+
     public static int randNum() {
         Random random = new Random();
         int min = 50;
@@ -44,7 +91,9 @@ public class Build {
         int randNumber = random.nextInt((max - min) + 1) + min;
         return randNumber;
     }
+    //endregion
 
+    //region println for main
     public void printlnMenu() throws IOException {
         System.out.println("Ваш тамагочи");
         printlCharacteristic();
@@ -195,7 +244,7 @@ public class Build {
             }
             break;
             case 6: {
-            loadCharacteristicsToFile();
+                loadCharacteristicsToFile();
             }
             break;
             case 0: {
@@ -205,65 +254,19 @@ public class Build {
         }
     }
 
-
-
-    public boolean isLife() {
-        return isLife;
-    }
-
-    static int inputInt(String message, int min, int max) {
-        boolean isValidInput;
-        int output = 0;
-        do {
-            try {
-                isValidInput = true;
-                Scanner scanner = new Scanner(System.in);
-
-                System.out.print(message);
-                output = scanner.nextInt();
-
-                if (output < min || output > max) {
-                    System.out.println("Ошибка ввода. Вы вышли за границы диапазона от " + min + " до " + max);
-                    throw new Exception();
-                }
-
-            } catch (Exception e) {
-                isValidInput = false;
-                System.out.println("Ошибка ввода. Пожалуйста повторите ввод");
-            }
-
-        } while (isValidInput == false);
-
-        return output;
-    }
-
-    static String inputString(String message) {
-        boolean isValidInput;
-        String output = "";
-        do {
-            try {
-                isValidInput = true;
-                Scanner scanner = new Scanner(System.in);
-
-                System.out.print(message);
-                output = scanner.nextLine();
-            } catch (Exception e) {
-                isValidInput = false;
-                System.out.println("Ошибка ввода. Пожалуйста повторите ввод");
-            }
-
-        } while (isValidInput == false);
-
-        return output;
-    }
-
-
     public void printlCharacteristic() {
         System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", "Здоровье", "Голод", "Чистота", "Иммунитет", "Сон"));
         System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", needInHealth, needInFood, needInHygiene, needInTreatment, needInSlip));
     }
 
-    static void saveCharacteristicsToFile(String filename ) throws IOException {
+    public boolean isLife() {
+        return isLife;
+    }
+
+    //endregion
+
+    //region functions for the file
+    void saveCharacteristicsToFile(String filename) throws IOException {
         filename = inputString("Введите файл для сохранения: ");
         FileWriter fileWriter = new FileWriter(filename);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -288,22 +291,25 @@ public class Build {
 
         System.out.println("Файл сохранён успешно");
     }
-static void loadCharacteristicsToFile() throws IOException {
 
-    String filename = inputString("Введите имя файла для выгрузки: ");
+    void loadCharacteristicsToFile() throws IOException {
 
-    FileReader fileReader = new FileReader(filename);
-    BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String filename = inputString("Введите имя файла для выгрузки: ");
 
-    needInHealth = Integer.parseInt(bufferedReader.readLine());
-    needInFood = Integer.parseInt(bufferedReader.readLine());
-    needInHygiene = Integer.parseInt(bufferedReader.readLine());
-    needInTreatment = Integer.parseInt(bufferedReader.readLine());
-    needInSlip = Integer.parseInt(bufferedReader.readLine());
+        FileReader fileReader = new FileReader(filename);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-    bufferedReader.close();
-    fileReader.close();
-    System.out.println("Персонаж загружен");
-}
+        needInHealth = Integer.parseInt(bufferedReader.readLine());
+        needInFood = Integer.parseInt(bufferedReader.readLine());
+        needInHygiene = Integer.parseInt(bufferedReader.readLine());
+        needInTreatment = Integer.parseInt(bufferedReader.readLine());
+        needInSlip = Integer.parseInt(bufferedReader.readLine());
 
+        bufferedReader.close();
+        fileReader.close();
+        System.out.println("Персонаж загружен");
+    }
+
+
+    //endregion
 }

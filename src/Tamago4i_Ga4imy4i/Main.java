@@ -5,7 +5,7 @@ public class Main {
         System.out.println("Игра тамагочи");
         Build build1 = new Build(100, Build.randNum(), Build.randNum(), Build.randNum(), Build.randNum());
         while (build1.isLife()) {
-        build1.printlnMenu();
+            build1.printlnMenu();
         }
     }
 }
