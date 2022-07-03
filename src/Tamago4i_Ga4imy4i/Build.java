@@ -1,8 +1,6 @@
 package Tamago4i_Ga4imy4i;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -262,31 +260,36 @@ public class Build {
         System.out.println(String.format("%-12s%-8s%-10s%-13s%-5s", needInHealth, needInFood, needInHygiene, needInTreatment, needInSlip));
     }
 
-    static void saveCharacteristicsToFile(String filename, Build build) throws IOException {
+    static void saveCharacteristicsToFile(String filename ) throws IOException {
         filename = inputString("Введите файл для сохранения");
         FileWriter fileWriter = new FileWriter(filename);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        bufferedWriter.write(Integer.toString(build.needInHealth));
+        bufferedWriter.write(Integer.toString(needInHealth));
         bufferedWriter.newLine();
 
-        bufferedWriter.write(Integer.toString(build.needInFood));
+        bufferedWriter.write(Integer.toString(needInFood));
         bufferedWriter.newLine();
 
-        bufferedWriter.write(Integer.toString(build.needInHygiene));
+        bufferedWriter.write(Integer.toString(needInHygiene));
         bufferedWriter.newLine();
 
-        bufferedWriter.write(Integer.toString(build.needInTreatment));
+        bufferedWriter.write(Integer.toString(needInTreatment));
         bufferedWriter.newLine();
 
-        bufferedWriter.write(Integer.toString(build.needInSlip));
+        bufferedWriter.write(Integer.toString(needInSlip));
         bufferedWriter.newLine();
 
-        fileWriter.close();
         bufferedWriter.close();
+        fileWriter.close();
 
         System.out.println("Файл сохранён успешно");
     }
+static void loadCharacteristicsToFile(String filename, Build build) throws IOException {
+    FileReader fileReader = new FileReader(filename);
+    BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+    int build.needInHealth = Integer.parseInt(bufferedReader.readLine());
+}
 
 }
