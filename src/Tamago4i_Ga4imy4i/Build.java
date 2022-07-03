@@ -25,6 +25,7 @@ public class Build {
 
     }
 
+    //region int peremen
     int food = 10;
     int hygiene = 5;
     int treatment = 10;
@@ -33,6 +34,8 @@ public class Build {
     int antiTreatment = 10;
     int antiFood = 20;
     int antiSleep = 15;
+
+    //endregion
 
     public static int randNum() {
         Random random = new Random();
@@ -192,7 +195,7 @@ public class Build {
             }
             break;
             case 6: {
-
+            loadCharacteristicsToFile();
             }
             break;
             case 0: {
@@ -261,7 +264,7 @@ public class Build {
     }
 
     static void saveCharacteristicsToFile(String filename ) throws IOException {
-        filename = inputString("Введите файл для сохранения");
+        filename = inputString("Введите файл для сохранения: ");
         FileWriter fileWriter = new FileWriter(filename);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
@@ -285,11 +288,22 @@ public class Build {
 
         System.out.println("Файл сохранён успешно");
     }
-static void loadCharacteristicsToFile(String filename, Build build) throws IOException {
+static void loadCharacteristicsToFile() throws IOException {
+
+    String filename = inputString("Введите имя файла для выгрузки: ");
+
     FileReader fileReader = new FileReader(filename);
     BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-    int build.needInHealth = Integer.parseInt(bufferedReader.readLine());
+    needInHealth = Integer.parseInt(bufferedReader.readLine());
+    needInFood = Integer.parseInt(bufferedReader.readLine());
+    needInHygiene = Integer.parseInt(bufferedReader.readLine());
+    needInTreatment = Integer.parseInt(bufferedReader.readLine());
+    needInSlip = Integer.parseInt(bufferedReader.readLine());
+
+    bufferedReader.close();
+    fileReader.close();
+    System.out.println("Персонаж загружен");
 }
 
 }
